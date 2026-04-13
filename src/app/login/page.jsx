@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     Eye,
     EyeOff,
@@ -9,18 +10,69 @@ import {
     ScanLine,
     Package2,
     BarChart3,
+    Loader2,
 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
+    const router = useRouter();
+
     const [showPassword, setShowPassword] = useState(false);
+    const [emailOrPhone, setEmailOrPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        if (!emailOrPhone || !password) {
+            toast.error("Please enter email/phone and password");
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    emailOrPhone,
+                    password,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                toast.error(data.message || "Login failed");
+                return;
+            }
+
+            toast.success("Login successful");
+
+            // Redirect to admin dashboard
+            router.push("/admin");
+        } catch (error) {
+            console.error("Login Error:", error);
+            toast.error("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleLogin = () => {
+        toast("Google login route connect next 🔥");
+    };
 
     return (
         <main className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-amber-50 via-white to-orange-50">
             <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-7xl items-center px-4 py-6 sm:px-6 lg:px-8">
                 <div className="grid w-full overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-md lg:min-h-[620px] lg:grid-cols-2">
-
-                    {/* Left Side Content - Reduced Height & Font */}
+                    {/* Left Side Content */}
                     <div className="flex items-center justify-center border-b border-amber-100 bg-gradient-to-br from-white to-amber-50/30 p-6 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
                         <div className="max-w-sm text-center lg:text-left">
                             {/* Brand */}
@@ -86,11 +138,11 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    {/* Right Side Form - Reduced Height */}
+                    {/* Right Side Form */}
                     <div className="flex items-center justify-center p-6 sm:p-8 lg:p-10">
                         <div className="w-full max-w-md">
                             {/* Heading */}
-                            <div className="text-center lg:text-center">
+                            <div className="text-center">
                                 <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
                                     Login
                                 </h1>
@@ -100,7 +152,7 @@ export default function LoginPage() {
                             </div>
 
                             {/* Form */}
-                            <form className="mt-7 space-y-4">
+                            <form onSubmit={handleLogin} className="mt-7 space-y-4">
                                 {/* Email / Phone */}
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-slate-700">
@@ -108,6 +160,8 @@ export default function LoginPage() {
                                     </label>
                                     <input
                                         type="text"
+                                        value={emailOrPhone}
+                                        onChange={(e) => setEmailOrPhone(e.target.value)}
                                         placeholder="Enter email or phone number"
                                         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-800 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-100"
                                     />
@@ -121,6 +175,8 @@ export default function LoginPage() {
                                     <div className="relative">
                                         <input
                                             type={showPassword ? "text" : "password"}
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Enter password"
                                             className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 pr-12 text-sm text-slate-800 outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-100"
                                         />
@@ -151,9 +207,17 @@ export default function LoginPage() {
                                 {/* Sign In Button */}
                                 <button
                                     type="submit"
-                                    className="w-full rounded-2xl bg-slate-900 px-5 py-3.5 text-base font-semibold text-white transition hover:bg-slate-800"
+                                    disabled={loading}
+                                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 px-5 py-3.5 text-base font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
                                 >
-                                    Sign In
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="h-5 w-5 animate-spin" />
+                                            Signing In...
+                                        </>
+                                    ) : (
+                                        "Sign In"
+                                    )}
                                 </button>
 
                                 {/* Divider */}
@@ -166,13 +230,13 @@ export default function LoginPage() {
                                 {/* Continue with Google */}
                                 <button
                                     type="button"
+                                    onClick={handleGoogleLogin}
                                     className="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-base font-medium text-slate-800 transition hover:bg-slate-50"
                                 >
                                     <FcGoogle className="h-5 w-5" />
                                     Continue with Google
                                 </button>
                             </form>
-
                         </div>
                     </div>
                 </div>

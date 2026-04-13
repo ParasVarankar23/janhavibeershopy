@@ -6,6 +6,7 @@ import PublicNavbar from "@/components/admin/PublicNavbar";
 import Sidebar from "@/components/admin/Sidebar";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import AppToaster from "@/components/layout/AppToaster";
 
 export default function ClientLayout({ children }) {
     const pathname = usePathname();
@@ -14,6 +15,8 @@ export default function ClientLayout({ children }) {
 
     return (
         <div className="min-h-screen bg-white text-gray-900">
+            <AppToaster />
+
             {isAdminRoute ? (
                 <div className="flex min-h-screen">
                     {/* Sidebar */}
