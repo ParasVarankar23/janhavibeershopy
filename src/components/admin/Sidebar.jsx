@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 const adminLinks = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/scan", label: "Scan", icon: ScanLine },
   { href: "/admin/sales", label: "Sales", icon: IndianRupee },

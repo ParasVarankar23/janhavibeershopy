@@ -55,7 +55,7 @@ export default function LoginPage() {
             toast.success("Login successful");
 
             // Redirect to admin dashboard
-            router.push("/admin");
+            router.push("/admin/dashboard");
         } catch (error) {
             console.error("Login Error:", error);
             toast.error("Something went wrong. Please try again.");

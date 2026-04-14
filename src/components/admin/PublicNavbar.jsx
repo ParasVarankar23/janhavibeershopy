@@ -120,7 +120,7 @@ export default function PublicNavbar({ onMenuClick = () => { } }) {
     const s = String(q || "").trim().toLowerCase();
     if (!s) return;
 
-    if (s.includes("dashboard")) return router.push("/admin");
+    if (s.includes("dashboard")) return router.push("/admin/dashboard");
     if (s.includes("product")) return router.push("/admin/products");
     if (s.includes("scan")) return router.push("/admin/scan");
     if (s.includes("sale")) return router.push("/admin/sales");
