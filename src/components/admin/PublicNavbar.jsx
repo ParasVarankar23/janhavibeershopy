@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   Bell,
   ChevronDown,
@@ -13,6 +11,8 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function PublicNavbar({ onMenuClick = () => { } }) {
@@ -50,11 +50,16 @@ export default function PublicNavbar({ onMenuClick = () => { } }) {
 
         const user = data.user || data.profile || {};
         const name = String(user.fullName || user.name || "").trim();
-        const photo = String(user.profileImage || user.photoUrl || "").trim();
+
+        const rawPhoto = user.profileImage || user.photoUrl || "";
+        const photoUrl =
+          typeof rawPhoto === "string"
+            ? rawPhoto.trim()
+            : String(rawPhoto?.url || "").trim();
 
         if (active) {
           setFullName(name || "Admin");
-          setProfileImage(photo || "");
+          setProfileImage(photoUrl || "");
 
           const onlyFirstName = name ? name.split(" ")[0] : "Admin";
           setFirstName(onlyFirstName);

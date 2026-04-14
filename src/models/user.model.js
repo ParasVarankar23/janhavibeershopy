@@ -44,6 +44,18 @@ const userSchema = new mongoose.Schema(
             default: null,
         },
 
+        // ✅ Profile Image Field Added
+        profileImage: {
+            url: {
+                type: String,
+                default: "",
+            },
+            public_id: {
+                type: String,
+                default: "",
+            },
+        },
+
         forgotPasswordOtp: {
             type: String,
             default: null,

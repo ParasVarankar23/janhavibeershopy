@@ -20,8 +20,8 @@ const adminLinks = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/scan", label: "Scan", icon: ScanLine },
   { href: "/admin/sales", label: "Sales", icon: IndianRupee },
-  { href: "/admin/profile", label: "Profile", icon: UserCircle },
-  { href: "/admin/notifications", label: "Notifications", icon: Bell },
+  // { href: "/admin/profile", label: "Profile", icon: UserCircle },
+  // { href: "/admin/notifications", label: "Notifications", icon: Bell },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -67,7 +67,7 @@ function SidebarContent({ pathname, onClose }) {
       </div>
 
       {/* Admin Badge */}
-      <div className="px-4 pt-4">
+      {/* <div className="px-4 pt-4">
         <div className="rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-3">
           <div className="inline-flex items-center rounded-xl bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
             Admin Panel
@@ -76,7 +76,7 @@ function SidebarContent({ pathname, onClose }) {
             Manage stock, scan products and monitor daily sales
           </p>
         </div>
-      </div>
+      </div> */}
 
       {/* Nav */}
       <div className="flex-1 overflow-y-auto p-3">
